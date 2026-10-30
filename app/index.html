@@ -563,6 +563,30 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 .kickrow .kicker:hover{transform:translateY(-2px);box-shadow:0 0 0 2px #C060D8,0 10px 22px rgba(139,92,246,.25)}
 @media (max-width:520px){.kickrow{grid-template-columns:repeat(3,1fr);gap:6px}.kickrow .kicker{font-size:.7rem!important;padding:5px 4px!important}}.kickrow .kicker{margin:0}.kicklink{text-decoration:none;color:var(--ink)}.kicklink:hover{background:var(--tint)}
 #own h2.oneline{white-space:nowrap;font-size:min(1.85rem,calc((100vw - 84px) / 20.6))!important}
+
+/* The four areas: a 2 by 2 grid of tiles; each opens the pop-up with the form. */
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 22px}
+.area{position:relative;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;font:inherit;color:var(--ink);
+  background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);border-left:5px solid var(--ac);border-radius:18px;padding:20px 18px;
+  box-shadow:0 10px 26px rgba(120,100,170,.14);transition:transform .2s ease,box-shadow .2s ease}
+.area:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(29,32,51,.18)}
+.area:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+.area .anum{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:var(--ac)}
+.area .atext{display:flex;flex-direction:column;gap:3px;flex:1}
+.area .aname{font-size:1.15rem;font-weight:700}
+.area .asub{font-size:.9rem;color:var(--soft);line-height:1.4}
+.area .ago{color:var(--ac);font-size:1.2rem;transition:transform .2s ease}.area:hover .ago{transform:translateX(4px)}
+.a1{--ac:#6F8BB5}.a2{--ac:#7EA27E}.a3{--ac:#C9825F}.a4{--ac:#9B88C7}
+@media (max-width:620px){.areas{gap:10px}.area{flex-direction:column;align-items:flex-start;gap:8px;padding:14px 13px}.area .ago{display:none}.area .anum{width:30px;height:30px;font-size:.9rem}.area .aname{font-size:1rem}.area .asub{font-size:.8rem}}
+#areaDlg{border:0;padding:0;background:transparent;width:min(640px,calc(100vw - 24px));max-height:92vh;color:var(--ink)}
+#areaDlg::backdrop{background:rgba(15,18,34,.45);backdrop-filter:blur(4px)}
+#areaDlg .acard{position:relative;background:var(--card);border-radius:22px;padding:26px 24px 20px;max-height:92vh;overflow:auto;box-shadow:0 30px 70px rgba(15,18,34,.35)}
+#areaDlg .atag{margin:0 40px 4px 0;font-size:.85rem;color:var(--soft)}
+#areaDlg h3{margin:0 0 16px;font-size:1.5rem;font-weight:700}
+#areaDlg .aclose{position:absolute;top:14px;right:14px;width:34px;height:34px;border:0;border-radius:50%;background:var(--tint);color:var(--soft);font-size:20px;line-height:1;cursor:pointer}
+#areaDlg .plabel{display:none}
+#areaDlg .ownmsg{margin:10px 0 0;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .area{background:var(--frost);border-color:rgba(255,255,255,.08)}}
 </style>
 
 <div class="wrap">
@@ -611,10 +635,20 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 
   <section class="block" id="own" hidden>
     <div class="orb b1" aria-hidden="true"></div>
-    <p class="kickrow"><a class="kicker kickfree" href="#oEmail">Free trial</a><a class="kicker kickpay" href="https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00" target="_blank" rel="noopener">Get full access →</a><a class="kicker kicklink" href="#try">See examples →</a></p>
+    <p class="kickrow"><a class="kicker kickfree" href="#areas">Free trial</a><a class="kicker kickpay" href="https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00" target="_blank" rel="noopener">Get full access →</a><a class="kicker kicklink" href="#try">See examples →</a></p>
     <h2>Get Your <span class="grad">Next Action</span></h2>
     <ul class="parts" aria-label="What you get"><li>What I’d do</li><li>What I’d say</li><li>Your next steps</li><li>What to watch out for</li><li>The ideas behind the advice</li></ul>
-    <div class="trygrid">
+    <div class="areas" id="areas" aria-label="Choose an area">
+      <button type="button" class="area a1" data-area="think"><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a2" data-area="communicate"><span class="anum">2</span><span class="atext"><span class="aname">Communicate</span><span class="asub">Say it with structure, and listen</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a3" data-area="do"><span class="anum">3</span><span class="atext"><span class="aname">Get it done</span><span class="asub">Systems over willpower</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a4" data-area="learn"><span class="anum">4</span><span class="atext"><span class="aname">Learn and grow</span><span class="asub">Learn with a goal, practise, review</span></span><span class="ago" aria-hidden="true">→</span></button>
+    </div>
+    <dialog id="areaDlg" aria-labelledby="areaT">
+      <div class="acard">
+        <button class="aclose" type="button" aria-label="Close">&times;</button>
+        <p class="atag" id="areaTag"></p>
+        <h3 id="areaT"></h3>
       <div class="panel">
         <p class="plabel">Your situation</p>
         <form id="ownForm" autocomplete="off">
@@ -631,10 +665,14 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
           <label class="fld"><span>How well do you understand other people&rsquo;s goals, interests, and concerns? <small>(optional)</small></span><textarea id="oOther" rows="3" maxlength="600" placeholder="A person or a group: what they want to achieve, what they care about, what worries them"></textarea></label>
           <label class="fld"><span>Anything else that matters? <small>(optional)</small></span><textarea id="oCtx" rows="2" maxlength="1000" placeholder="People, deadlines, what you've tried"></textarea></label>
           <button class="btn big dark trygo" type="submit" id="ownGo">Get My Next Action</button>
+          <p class="ownerr ownmsg" id="ownMsg" hidden></p>
           <p class="trynote" id="ownNote">Give Underline a moment to think....</p>
           </div>
         </form>
       </div>
+      </div>
+    </dialog>
+    <div class="trygrid">
       <div class="panel full" id="ownOut" aria-live="polite" hidden></div>
     </div>
   </section>
@@ -961,8 +999,20 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function codes(action,extra){if(mode==='member')action={feedback:'mfeedback',plan:'mplan'}[action]||action;
     var b={action:action,email:email()};for(var k in extra)b[k]=extra[k];
     return fetch(CODE_API,{method:'POST',body:JSON.stringify(b)}).then(function(r){return r.json();});}
-  function say(msg){oOut.replaceChildren(el('p','ownerr',msg));oOut.hidden=false;}
-  function join(){$('#gateT').textContent='Join Underline AI';
+  // The four areas. Picking one opens the pop-up with the sign-in and situation fields.
+  var AREAS={think:['1','Think it through','Get to the heart of the problem before you act'],communicate:['2','Communicate','Say it with structure, and listen'],
+    do:['3','Get it done','Systems over willpower'],learn:['4','Learn and grow','Learn with a goal, practise, review']};
+  var area='',adlg=$('#areaDlg');
+  function areaOpen(){return adlg&&adlg.open;}
+  function closeArea(){if(areaOpen())adlg.close();}
+  function openArea(k){area=k;var a=AREAS[k];$('#areaTag').textContent=a[0]+' · '+a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
+    if(adlg.showModal)adlg.showModal();else adlg.setAttribute('open','');
+    var f=!emailField.hidden&&oSend&&!oSend.hidden?$('#oEmail'):$('#oSit');if(f)f.focus();}
+  document.querySelectorAll('.area').forEach(function(b){b.addEventListener('click',function(){openArea(b.getAttribute('data-area'));});});
+  adlg.querySelector('.aclose').addEventListener('click',closeArea);
+  adlg.addEventListener('click',function(e){if(e.target===adlg)closeArea();});
+  function say(msg){if(areaOpen()){var m=$('#ownMsg');m.textContent=msg;m.hidden=false;return;}oOut.replaceChildren(el('p','ownerr',msg));oOut.hidden=false;}
+  function join(){closeArea();$('#gateT').textContent='Join Underline AI';
     dlg.querySelector('.gcard p').textContent='Full access is for Underline AI members. We will grant your access within 12 to 24 hours of your membership.';
     // Members who used their free try sign in from here.
     if(!dlg.querySelector('.gmember')){var gm=el('p','gmember','Already a member? ');var b=el('button',null,'Sign in');b.type='button';
@@ -972,7 +1022,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   // Every Get full access on the page opens the pop-up; its own button goes to the payment page.
   dlg.querySelector('a.btn').href=PAY;dlg.querySelector('a.btn').target='_blank';dlg.querySelector('a.btn').rel='noopener';
   document.querySelectorAll('a[href="#join"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();join();});});
-  function full(){var p=el('p','ownerr','Free tries have reached their limit for now. Please come back in a few days and try again. Want your answer today? ');
+  function full(){closeArea();var p=el('p','ownerr','Free tries have reached their limit for now. Please come back in a few days and try again. Want your answer today? ');
     var a=el('a',null,'Get full access');a.href='#join';a.addEventListener('click',function(e){e.preventDefault();join();});p.append(a,'.');oOut.replaceChildren(p);oOut.hidden=false;}
 
   // Before the code: only the email and the button. After it: the code box and the situation.
@@ -1029,7 +1079,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 
   $('#ownForm').addEventListener('submit',function(e){e.preventDefault();
     if(trialUsed&&mode!=='member')return join();
-    var body={sit:$('#oSit').value.trim(),goal:$('#oGoal').value.trim(),other:$('#oOther').value.trim(),ctx:$('#oCtx').value.trim()};
+    var body={area:area,sit:$('#oSit').value.trim(),goal:$('#oGoal').value.trim(),other:$('#oOther').value.trim(),ctx:$('#oCtx').value.trim()};$('#ownMsg').hidden=true;
     var sitErr=$('#oSitErr');if(sitErr)sitErr.remove();
     if(body.sit.length<15){var m=el('p','fielderr','Please write at least 15 characters about what’s happening.');m.id='oSitErr';
       $('#oSit').after(m);$('#oSit').focus();$('#oSit').addEventListener('input',function(){m.remove();},{once:true});return;}
@@ -1037,7 +1087,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     if(mode==='member'&&me)return askMember(body);
     var code=$('#oCode').value.replace(/\D/g,'');
     if(code.length!==6){$('#oCode').focus();say('Please enter the 6-digit code from your email.');return;}
-    oGo.disabled=true;working('Checking your code','Just a moment…',[]);
+    oGo.disabled=true;say('Checking your code…');
     var bad=function(j){oGo.disabled=false;
       if(j.error==='bad_code'){$('#oCode').focus();return say('That code doesn’t match. Please check the email and try again.');}
       if(j.error==='expired')return say('That code has expired. Click “Send a new code” to get a fresh one.');
@@ -1049,7 +1099,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     else codes('verify',{code:code}).then(function(j){
         if(!j.ok)return bad(j);verified=$('#oEmail').value.trim();body.email=verified;askTrial(body);}).catch(function(){bad({});});
   });
-  function waitMsg(first){oGo.disabled=true;working('We’re creating the best personalized advice for your situation.',first,[[35000,'Almost there. Thank you for waiting.']]);
+  function waitMsg(first){closeArea();oGo.disabled=true;working('We’re creating the best personalized advice for your situation.',first,[[35000,'Almost there. Thank you for waiting.']]);
     oOut.scrollIntoView({behavior:'smooth',block:'start'});}
   function answerOrError(res,tag){
     if(res.ok&&res.j.answer){var x=fromApi(res.j.answer);
