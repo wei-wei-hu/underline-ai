@@ -648,6 +648,15 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 .area .aname{font-family:inherit!important;font-weight:600!important;font-size:1.15rem!important;letter-spacing:-.01em!important;white-space:normal!important}
 #areaDlg h3{font-family:inherit!important;font-weight:600!important;font-size:1.5rem!important;letter-spacing:-.01em!important}
 @media (max-width:620px){.area .aname{font-size:1rem!important}}
+/* One part of the answer at a time */
+.bgrid > .bcard.bsolo{grid-column:1/-1}
+.bstep{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 0;flex-wrap:wrap}
+.bcount{font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.bstep .bnext{background:#1D2033;color:#fff;border:0;cursor:pointer;padding:12px 22px;font-weight:600;transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 8px 20px rgba(29,32,51,.22)}
+.bstep .bnext:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(29,32,51,.26)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bstep .bnext{background:#2A2F4A;border:1px solid rgba(255,255,255,.18)}}
+@media (prefers-reduced-motion:no-preference){.bcard.bin{animation:bin .35s ease}@keyframes bin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+@media (max-width:520px){.bstep .bnext{width:100%}}
 </style>
 
 <div class="wrap">
@@ -838,7 +847,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     // Save as PDF and Print: the answer board on one landscape page, with the brand line above it.
     function printPlan(){var pa=$('#printArea');if(!pa){pa=el('div');pa.id='printArea';document.body.append(pa);}
       var end=el('div','pend');end.append(el('b',null,'Know your next best action.'),document.createTextNode('\u00a9 2026 All Rights Reserved.'));
-      pa.replaceChildren(into.querySelector('.board').cloneNode(true),end);
+      var bc=into.querySelector('.board').cloneNode(true);bc.querySelectorAll('[hidden]').forEach(function(n){n.hidden=false;});bc.querySelectorAll('.bsolo').forEach(function(n){n.classList.remove('bsolo');});pa.replaceChildren(bc,end);
       // Measure the one-page layout, then shrink it to fit a landscape or a portrait page.
       pa.classList.add('measuring');var h=pa.offsetHeight;pa.classList.remove('measuring');
       pa.style.setProperty('--zl',Math.min(.9,700/h).toFixed(3));pa.style.setProperty('--zp',Math.min(.64,960/h).toFixed(3));
@@ -885,8 +894,19 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function showSample(x,into,tag,mail){
     into=into||out;
     into.replaceChildren(board(x,tag||'Sample answer'));
-    into.append(actions(x,into,mail));
+    into.append(stepper(into),actions(x,into,mail));
   }
+  // The answer shows one part at a time: Next names the part that comes next; after the last part, Show all.
+  function stepper(into){
+    var cards=[].slice.call(into.querySelectorAll('.bgrid > .bcard')),i=0,bar=el('div','bstep'),count=el('span','bcount'),go=el('button','btn bnext');go.type='button';
+    function label(c){var l=c.querySelector('.blabel');return l?l.textContent.replace(/^\u2605\s*/,''):'';}
+    function show(){cards.forEach(function(c,k){c.hidden=k!==i;c.classList.toggle('bsolo',k===i);});
+      count.textContent=(i+1)+' of '+cards.length;
+      go.textContent=i<cards.length-1?'Next: '+label(cards[i+1])+' \u2192':'Show all';}
+    go.addEventListener('click',function(){
+      if(i<cards.length-1){i++;show();cards[i].classList.add('bin');into.querySelector('.board').scrollIntoView({behavior:'smooth',block:'start'});return;}
+      cards.forEach(function(c){c.hidden=false;c.classList.remove('bsolo');});bar.remove();});
+    bar.append(count,go);show();return bar;}
 
   // PowerPoint: one 16:9 slide in the same design. The gradient background, spheres and the
   // What I'd do gradient are drawn as pictures; all the words stay editable text.
