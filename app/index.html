@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
 /* Layout: nav, two-column hero (headline + app preview), three feature tiles, how it works, a worked example (inputs, then the answer), a closing call to action and a footer. */
 :root{
@@ -587,6 +587,49 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 #areaDlg .plabel{display:none}
 #areaDlg .ownmsg{margin:10px 0 0;font-weight:600}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .area{background:var(--frost);border-color:rgba(255,255,255,.08)}}
+
+/* Area tiles and pop-up in the style of the soft pastel app templates: tinted cards, a white icon
+   square, a small number, a serif title, a dark pill button, and a gradient tinted by the area. */
+.areas{gap:16px}
+.area{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:start;column-gap:14px;row-gap:14px;
+  background:var(--at)!important;border:1px solid rgba(255,255,255,.7)!important;border-left:1px solid rgba(255,255,255,.7)!important;border-radius:24px;padding:20px 20px 22px;
+  box-shadow:0 12px 28px var(--as),inset 0 1px 0 rgba(255,255,255,.6)!important}
+.area:hover{box-shadow:0 18px 36px var(--as)!important}
+.area .aicon{grid-column:1;grid-row:1;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.75);display:grid;place-items:center;color:var(--ak);box-shadow:0 4px 12px rgba(29,32,51,.06)}
+.area .aicon svg{width:22px;height:22px}
+.area .anum{grid-column:3;grid-row:1;width:auto;height:auto;background:none!important;border-radius:0;color:var(--ak);opacity:.65;font-size:.75rem;font-weight:600;letter-spacing:.14em}
+.area .anum::before{content:"0"}
+.area .atext{grid-column:1/-1;grid-row:2;gap:6px}
+.area .aname{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:1.6rem;letter-spacing:-.01em;color:var(--ak);line-height:1.1}
+.area .asub{color:color-mix(in srgb,var(--ak) 72%,transparent)!important;font-size:.92rem}
+.area .ago{grid-column:3;grid-row:2;align-self:end;width:34px;height:34px;border-radius:50%;background:#1D2033;color:#fff!important;display:grid!important;place-items:center;font-size:1rem}
+.area:hover .ago{transform:translateX(3px)}
+.a1{--at:linear-gradient(160deg,#DCE3FF,#C7D2FB);--ak:#2E3A75;--as:rgba(91,108,242,.18)}
+.a2{--at:linear-gradient(160deg,#DDF1DC,#C6E6CB);--ak:#24563A;--as:rgba(69,184,132,.18)}
+.a3{--at:linear-gradient(160deg,#FCE6D2,#F6D2B4);--ak:#7A3E1C;--as:rgba(244,149,106,.2)}
+.a4{--at:linear-gradient(160deg,#ECE2FC,#DCCDF6);--ak:#4A3584;--as:rgba(139,120,242,.2)}
+@media (max-width:620px){.area{padding:16px 15px 16px;row-gap:12px;column-gap:10px}.area .aicon{width:38px;height:38px;border-radius:12px}.area .aicon svg{width:19px;height:19px}
+  .area .aname{font-size:1.25rem}.area .asub{font-size:.8rem}.area .ago{display:none!important}.area .atext{grid-column:1/-1}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .a1{--at:linear-gradient(160deg,#2B3366,#252C55);--ak:#DCE3FF}
+  :root:not([data-theme="light"]) .a2{--at:linear-gradient(160deg,#21483A,#1C3D31);--ak:#D6F0DA}
+  :root:not([data-theme="light"]) .a3{--at:linear-gradient(160deg,#5A3626,#4A2D20);--ak:#FBE2CF}
+  :root:not([data-theme="light"]) .a4{--at:linear-gradient(160deg,#3E3166,#342A57);--ak:#E7DDFB}
+  :root:not([data-theme="light"]) .area .aicon{background:rgba(255,255,255,.12)}
+  :root:not([data-theme="light"]) .area .ago{background:#fff;color:#1D2033!important}}
+/* Pop-up */
+#areaDlg .acard{background:linear-gradient(180deg,var(--dt,#EEF0FF) 0,var(--card) 220px)!important;border-radius:28px;padding:28px 26px 22px}
+#areaDlg .atag{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:600;color:var(--dk,#5E6475)}
+#areaDlg h3{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:2.1rem;letter-spacing:-.015em;margin:4px 0 20px}
+#areaDlg .aclose{background:rgba(255,255,255,.8)}
+#areaDlg input,#areaDlg textarea{background:rgba(255,255,255,.85)!important;border-radius:14px!important}
+#areaDlg .btn.trygo{border-radius:999px!important}
+#areaDlg[data-a="think"]{--dt:#DCE3FF;--dk:#2E3A75}#areaDlg[data-a="communicate"]{--dt:#DDF1DC;--dk:#24563A}
+#areaDlg[data-a="do"]{--dt:#FCE6D2;--dk:#7A3E1C}#areaDlg[data-a="learn"]{--dt:#ECE2FC;--dk:#4A3584}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #areaDlg .acard{background:var(--card)!important}:root:not([data-theme="light"]) #areaDlg input,:root:not([data-theme="light"]) #areaDlg textarea{background:var(--bg)!important}
+  :root:not([data-theme="light"]) #areaDlg .atag{color:var(--soft)}:root:not([data-theme="light"]) #areaDlg .aclose{background:var(--tint)}}
+#own h2{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:2.4rem;letter-spacing:-.015em}#own h2 .grad{font-weight:500}
+.area .anum{min-width:0!important;white-space:nowrap;display:block!important;text-align:right}
+#areaDlg{overflow:visible;border-radius:28px}#areaDlg .acard{overflow:auto}
 </style>
 
 <div class="wrap">
@@ -639,10 +682,10 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     <h2>Get Your <span class="grad">Next Action</span></h2>
     <ul class="parts" aria-label="What you get"><li>What I’d do</li><li>What I’d say</li><li>Your next steps</li><li>What to watch out for</li><li>The ideas behind the advice</li></ul>
     <div class="areas" id="areas" aria-label="Choose an area">
-      <button type="button" class="area a1" data-area="think"><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span></span><span class="ago" aria-hidden="true">→</span></button>
-      <button type="button" class="area a2" data-area="communicate"><span class="anum">2</span><span class="atext"><span class="aname">Communicate</span><span class="asub">Say it with structure, and listen</span></span><span class="ago" aria-hidden="true">→</span></button>
-      <button type="button" class="area a3" data-area="do"><span class="anum">3</span><span class="atext"><span class="aname">Get it done</span><span class="asub">Systems over willpower</span></span><span class="ago" aria-hidden="true">→</span></button>
-      <button type="button" class="area a4" data-area="learn"><span class="anum">4</span><span class="atext"><span class="aname">Learn and grow</span><span class="asub">Learn with a goal, practise, review</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a1" data-area="think"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg></span><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a2" data-area="communicate"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span><span class="anum">2</span><span class="atext"><span class="aname">Communicate</span><span class="asub">Say it with structure, and listen</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a3" data-area="do"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></svg></span><span class="anum">3</span><span class="atext"><span class="aname">Get it done</span><span class="asub">Systems over willpower</span></span><span class="ago" aria-hidden="true">→</span></button>
+      <button type="button" class="area a4" data-area="learn"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M8 7h8M8 11h6"/></svg></span><span class="anum">4</span><span class="atext"><span class="aname">Learn and grow</span><span class="asub">Learn with a goal, practise, review</span></span><span class="ago" aria-hidden="true">→</span></button>
     </div>
     <dialog id="areaDlg" aria-labelledby="areaT">
       <div class="acard">
@@ -1005,7 +1048,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   var area='',adlg=$('#areaDlg');
   function areaOpen(){return adlg&&adlg.open;}
   function closeArea(){if(areaOpen())adlg.close();}
-  function openArea(k){area=k;var a=AREAS[k];$('#areaTag').textContent=a[0]+' · '+a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
+  function openArea(k){area=k;var a=AREAS[k];adlg.setAttribute('data-a',k);$('#areaTag').textContent='0'+a[0]+' / 04 · '+a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
     if(adlg.showModal)adlg.showModal();else adlg.setAttribute('open','');
     var f=!emailField.hidden&&oSend&&!oSend.hidden?$('#oEmail'):$('#oSit');if(f)f.focus();}
   document.querySelectorAll('.area').forEach(function(b){b.addEventListener('click',function(){openArea(b.getAttribute('data-area'));});});
