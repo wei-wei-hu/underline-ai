@@ -627,7 +627,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 #areaDlg[data-a="do"]{--dt:#FCE6D2;--dk:#7A3E1C}#areaDlg[data-a="learn"]{--dt:#ECE2FC;--dk:#4A3584}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #areaDlg .acard{background:var(--card)!important}:root:not([data-theme="light"]) #areaDlg input,:root:not([data-theme="light"]) #areaDlg textarea{background:var(--bg)!important}
   :root:not([data-theme="light"]) #areaDlg .atag{color:var(--soft)}:root:not([data-theme="light"]) #areaDlg .aclose{background:var(--tint)}}
-#own h2{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:2.4rem;letter-spacing:-.015em}#own h2 .grad{font-weight:500}
+
 .area .anum{min-width:0!important;white-space:nowrap;display:block!important;text-align:right}
 #areaDlg{overflow:visible;border-radius:28px}#areaDlg .acard{overflow:auto}
 /* The page starts at the two steps: 1 pick an area, 2 describe your situation (in the pop-up). */
@@ -644,6 +644,10 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 @media (max-width:620px){.area .atext{padding-right:0}.area .aname{font-size:1.12rem;white-space:normal}.area .asub{font-size:.8rem;line-height:1.4}}
 @media (max-width:380px){.area .aname{font-size:.95rem;white-space:nowrap}}
 .area{align-content:start}
+/* Same type as the rest of the app: the heading matches the Examples heading; tiles and pop-up use the page font. */
+.area .aname{font-family:inherit!important;font-weight:600!important;font-size:1.15rem!important;letter-spacing:-.01em!important;white-space:normal!important}
+#areaDlg h3{font-family:inherit!important;font-weight:600!important;font-size:1.5rem!important;letter-spacing:-.01em!important}
+@media (max-width:620px){.area .aname{font-size:1rem!important}}
 </style>
 
 <div class="wrap">
@@ -693,8 +697,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   <section class="block" id="own" hidden>
     <div class="orb b1" aria-hidden="true"></div>
     <p class="kickrow"><a class="kicker kickfree" href="#areas">Free trial</a><a class="kicker kickpay" href="https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00" target="_blank" rel="noopener">Get full access →</a></p>
-    <h2>Pick your area</h2>
-    <p class="getline">Get your <b>next best action</b></p>
+    <h2>Choose your area. Get your <span class="grad">next best action.</span></h2>
     <ul class="parts" aria-label="What you get"><li>What I’d do</li><li>What I’d say</li><li>Your next steps</li><li>What to watch out for</li><li>The ideas behind the advice</li></ul>
     <div class="areas" id="areas" aria-label="Choose an area">
       <button type="button" class="area a1" data-area="think"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg></span><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span></span><span class="ago" aria-hidden="true">→</span></button>
