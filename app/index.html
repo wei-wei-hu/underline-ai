@@ -638,6 +638,12 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 #areaDlg .atag{display:flex;align-items:center;gap:8px}
 #areaDlg .atag .stepn{background:var(--dk,#1D2033);color:#fff}
 #own .getline{margin:-6px 0 14px;font-family:Newsreader,Georgia,serif;font-size:1.35rem;color:var(--soft)}#own .getline b{font-weight:500;color:var(--ink)}
+/* Tile text: one size for every title, and room so the text never runs under the arrow. */
+.area .atext{padding-right:52px}
+.area .aname{white-space:nowrap}
+@media (max-width:620px){.area .atext{padding-right:0}.area .aname{font-size:1.12rem;white-space:normal}.area .asub{font-size:.8rem;line-height:1.4}}
+@media (max-width:380px){.area .aname{font-size:.95rem;white-space:nowrap}}
+.area{align-content:start}
 </style>
 
 <div class="wrap">
