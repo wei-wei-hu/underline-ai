@@ -902,7 +902,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     function label(c){var l=c.querySelector('.blabel');return l?l.textContent.replace(/^\u2605\s*/,''):'';}
     function show(){cards.forEach(function(c,k){c.hidden=k!==i;c.classList.toggle('bsolo',k===i);});
       count.textContent=(i+1)+' of '+cards.length;
-      go.textContent=i<cards.length-1?'Next: '+label(cards[i+1])+' \u2192':'Show all';}
+      go.textContent=i<cards.length-1?label(cards[i+1])+' \u2192':'Show all';}
     go.addEventListener('click',function(){
       if(i<cards.length-1){i++;show();cards[i].classList.add('bin');into.querySelector('.board').scrollIntoView({behavior:'smooth',block:'start'});return;}
       cards.forEach(function(c){c.hidden=false;c.classList.remove('bsolo');});bar.remove();});
