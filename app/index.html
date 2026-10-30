@@ -630,6 +630,13 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 #own h2{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:2.4rem;letter-spacing:-.015em}#own h2 .grad{font-weight:500}
 .area .anum{min-width:0!important;white-space:nowrap;display:block!important;text-align:right}
 #areaDlg{overflow:visible;border-radius:28px}#areaDlg .acard{overflow:auto}
+/* The page starts at the two steps: 1 pick an area, 2 describe your situation (in the pop-up). */
+.hero{display:none!important}
+#own{margin-top:12px!important}
+.stepl{display:flex;align-items:center;gap:10px;margin:8px 0 14px;font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.stepn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:.75rem;letter-spacing:0}
+#areaDlg .atag{display:flex;align-items:center;gap:8px}
+#areaDlg .atag .stepn{background:var(--dk,#1D2033);color:#fff}
 </style>
 
 <div class="wrap">
@@ -681,6 +688,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     <p class="kickrow"><a class="kicker kickfree" href="#areas">Free trial</a><a class="kicker kickpay" href="https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00" target="_blank" rel="noopener">Get full access →</a><a class="kicker kicklink" href="#try">See examples →</a></p>
     <h2>Get Your <span class="grad">Next Action</span></h2>
     <ul class="parts" aria-label="What you get"><li>What I’d do</li><li>What I’d say</li><li>Your next steps</li><li>What to watch out for</li><li>The ideas behind the advice</li></ul>
+    <p class="stepl"><span class="stepn">1</span>Pick an area</p>
     <div class="areas" id="areas" aria-label="Choose an area">
       <button type="button" class="area a1" data-area="think"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg></span><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span></span><span class="ago" aria-hidden="true">→</span></button>
       <button type="button" class="area a2" data-area="communicate"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span><span class="anum">2</span><span class="atext"><span class="aname">Communicate</span><span class="asub">Say it with structure, and listen</span></span><span class="ago" aria-hidden="true">→</span></button>
@@ -1048,7 +1056,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   var area='',adlg=$('#areaDlg');
   function areaOpen(){return adlg&&adlg.open;}
   function closeArea(){if(areaOpen())adlg.close();}
-  function openArea(k){area=k;var a=AREAS[k];adlg.setAttribute('data-a',k);$('#areaTag').textContent='0'+a[0]+' / 04 · '+a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
+  function openArea(k){area=k;var a=AREAS[k];adlg.setAttribute('data-a',k);$('#areaTag').replaceChildren(el('span','stepn','2'),document.createTextNode('Describe your situation'));$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
     if(adlg.showModal)adlg.showModal();else adlg.setAttribute('open','');
     var f=!emailField.hidden&&oSend&&!oSend.hidden?$('#oEmail'):$('#oSit');if(f)f.focus();}
   document.querySelectorAll('.area').forEach(function(b){b.addEventListener('click',function(){openArea(b.getAttribute('data-area'));});});
