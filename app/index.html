@@ -760,7 +760,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
           <label class="fld"><span>What do you want to happen?</span><input id="oGoal" type="text" maxlength="300" placeholder="Your goal"></label>
           <label class="fld"><span>How well do you understand other people&rsquo;s goals, interests, and concerns? <small>(optional)</small></span><textarea id="oOther" rows="3" maxlength="600" placeholder="A person or a group: what they want to achieve, what they care about, what worries them"></textarea></label>
           <label class="fld"><span>Anything else that matters? <small>(optional)</small></span><textarea id="oCtx" rows="2" maxlength="1000" placeholder="People, deadlines, what you've tried"></textarea></label>
-          <button class="btn big dark trygo" type="submit" id="ownGo">Get My Next Action</button>
+          <button class="btn big dark trygo" type="submit" id="ownGo">Get insights</button>
           <p class="ownerr ownmsg" id="ownMsg" hidden></p>
           <p class="trynote" id="ownNote">Give Underline a moment to think....</p>
           </div>
@@ -1137,13 +1137,13 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function step2(){$('#ownStep2').hidden=false;$('#ownCodeBox').hidden=false;oSend.hidden=true;
     var m=$('#ownSent');m.replaceChildren('We sent a 6-digit code to '+$('#oEmail').value.trim()+'. Check your inbox, and your spam folder too. ');
     var again=el('button',null,'Send a new code');again.type='button';again.addEventListener('click',sendCode);m.append(again);
-    oGo.textContent=mode==='member'?'Get My Next Action':'Get My Next Action';$('#oCode').focus();}
+    oGo.textContent=mode==='member'?'Get insights':'Get insights';$('#oCode').focus();}
   // Members see only See examples; visitors also see Free trial and Get full access.
   function visitorPills(on){document.querySelectorAll('.kickfree,.kickpay').forEach(function(a){a.hidden=!on;});}
   function showMember(){mode='member';visitorPills(false);emailField.hidden=true;oSend.hidden=true;$('#ownCodeBox').hidden=true;$('#ownStep2').hidden=false;
     var w=$('#ownWho');w.replaceChildren();var who=el('span');who.append('Signed in as ',el('b',null,me.email),' · Full access');
     var out=el('button',null,'Sign out');out.type='button';out.addEventListener('click',function(){signOut();});w.append(who,out);w.hidden=false;
-    oGo.textContent='Get My Next Action';oNote.textContent='Give Underline a moment to think....';}
+    oGo.textContent='Get insights';oNote.textContent='Give Underline a moment to think....';}
   function signOut(msg){remember(null);visitorPills(true);mode='';verified='';emailField.hidden=false;$('#ownWho').hidden=true;$('#ownStep2').hidden=true;$('#ownCodeBox').hidden=true;
     oSend.hidden=false;oOut.hidden=true;if(msg)say(msg);}
   if(me&&me.email&&me.login)showMember();
