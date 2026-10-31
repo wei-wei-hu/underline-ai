@@ -683,7 +683,6 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 .sbox textarea{width:100%;border:1px solid var(--line);border-radius:18px;padding:14px 16px;background:var(--card);color:var(--ink);font:inherit;font-size:.95rem;resize:vertical;box-shadow:0 4px 14px rgba(29,32,51,.05)}
 .sbox textarea:focus{outline:2px solid var(--purple);outline-offset:1px}
 .helpq{margin:0 0 10px;font-weight:600;font-size:.92rem}
-#areaDlg .fld:has(#oSit){display:none!important}#sitErr{margin:-8px 0 12px}
 </style>
 
 <div class="wrap">
@@ -733,10 +732,8 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   <section class="block" id="own" hidden>
     <div class="orb b1" aria-hidden="true"></div>
     <p class="kickrow"><a class="kicker kickfree" href="#areas">Free trial</a><a class="kicker kickpay" href="https://buy.stripe.com/cNi14nfzP6RKfkX9F2eQM00" target="_blank" rel="noopener">Get full access →</a></p>
-    <h2>Describe your situation. Get your <span class="grad">next best action.</span></h2>
+    <h2>Choose your area. Get your <span class="grad">next best action.</span></h2>
     <ul class="parts" aria-label="What you get"><li>What I’d do</li><li>What I’d say</li><li>Your next steps</li><li>What to watch out for</li><li>The ideas behind the advice</li></ul>
-    <label class="sbox" for="sitFirst"><span class="slab">What&rsquo;s happening?</span><textarea id="sitFirst" rows="3" maxlength="2000" placeholder="Describe your situation in a few sentences. Who is involved and what has happened so far."></textarea></label>
-    <p class="helpq" id="helpq">How can Underline help?</p>
     <div class="areas" id="areas" aria-label="Choose an area">
       <button type="button" class="area a1" data-area="think"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg></span><span class="anum">1</span><span class="atext"><span class="aname">Think it through</span><span class="asub">Get to the heart of the problem before you act</span><span class="aex">Should I take the new role? What is really going wrong?</span></span><span class="ago" aria-hidden="true">→</span></button>
       <button type="button" class="area a2" data-area="communicate"><span class="aicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span><span class="anum">2</span><span class="atext"><span class="aname">Communicate</span><span class="asub">Say it with structure, and listen</span><span class="aex">How do I get buy-in? What do I tell my manager?</span></span><span class="ago" aria-hidden="true">→</span></button>
@@ -1115,12 +1112,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   var area='',adlg=$('#areaDlg');
   function areaOpen(){return adlg&&adlg.open;}
   function closeArea(){if(areaOpen())adlg.close();}
-  function openArea(k){var first=$('#sitFirst'),old=$('#sitErr');if(old)old.remove();
-    if(first){var v=first.value.trim();
-      if(v.length<15){var m=el('p','fielderr',v?'Please write at least 15 characters about what’s happening.':'Describe your situation first, then choose how Underline can help.');m.id='sitErr';
-        first.closest('.sbox').after(m);first.focus();first.scrollIntoView({behavior:'smooth',block:'center'});first.addEventListener('input',function(){m.remove();},{once:true});return;}
-      $('#oSit').value=v;}
-    area=k;var a=AREAS[k]||['','Your situation','Any area: Underline picks the ideas that fit'];adlg.setAttribute('data-a',k);$('#areaTag').textContent=a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
+  function openArea(k){area=k;var a=AREAS[k]||['','Your situation','Any area: Underline picks the ideas that fit'];adlg.setAttribute('data-a',k);$('#areaTag').textContent=a[2];$('#areaT').textContent=a[1];$('#ownMsg').hidden=true;
     if(adlg.showModal)adlg.showModal();else adlg.setAttribute('open','');
     var f=!emailField.hidden&&oSend&&!oSend.hidden?$('#oEmail'):$('#oSit');if(f)f.focus();}
   document.querySelectorAll('.area').forEach(function(b){b.addEventListener('click',function(){openArea(b.getAttribute('data-area'));});});
