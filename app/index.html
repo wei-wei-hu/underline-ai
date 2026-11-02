@@ -687,6 +687,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .a5{--at:#4A3C1E;--ak:#FCEBC7}:root:not([data-theme="light"]) .a6{--at:#1F403C;--ak:#D2EEEA}:root:not([data-theme="light"]) .a7{--at:#4A2638;--ak:#F8DCEA}}
 :root[data-theme="dark"] .a5{--at:#4A3C1E;--ak:#FCEBC7}:root[data-theme="dark"] .a6{--at:#1F403C;--ak:#D2EEEA}:root[data-theme="dark"] .a7{--at:#4A2638;--ak:#F8DCEA}
 #areaDlg[data-a="plan"]{--dt:#D6EFC7;--dk:#2C5520}#areaDlg[data-a="meeting"]{--dt:#FCEBC7;--dk:#6B4A12}#areaDlg[data-a="followup"]{--dt:#D2EEEA;--dk:#1E5049}#areaDlg[data-a="wrapup"]{--dt:#F8DCEA;--dk:#6E2550}
+.brecs{grid-column:1/-1}.brecs .rgrp{margin:14px 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#8A8FA3;font-weight:600}.brecs .rgrp:first-of-type{margin-top:4px}.brecs .rlink{font-weight:600;text-decoration:none;color:inherit}.brecs .rlink:hover{text-decoration:underline}.brecs .rmeta{display:block;font-size:.78rem;color:#8A8FA3}.brecs .rwhy{display:block;font-size:.85rem}
 </style>
 
 <div class="wrap">
@@ -864,11 +865,28 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function head(title,tag){var f=document.createDocumentFragment();f.append(el('p','plabel','Your Next Action'));if(tag)f.append(el('span','tag',tag));f.append(el('h3',null,title));return f;}
   var out=$('#tryOut');
   // A plain-text copy of an answer, for Copy and Email it to me.
+  // Keep learning: up to three books, podcast episodes, videos and articles, found by live web search on the server.
+  var REC_KINDS=[['books','Books'],['podcasts','Podcast episodes'],['videos','Videos'],['articles','Articles']];
+  function fillRecs(card,r,x){var lab=card.querySelector('.blabel');card.replaceChildren(lab);var any=false;
+    REC_KINDS.forEach(function(k,gi){var items=(r&&r[k[0]])||[];if(!items.length)return;any=true;
+      var ol=el('ol','bplan');card.append(el('h5','rgrp',k[1]),ol);
+      items.forEach(function(it,i){var li=el('li'),n=el('span','bnum',String(i+1)),t=el('span'),a=el('a','rlink',it.title);
+        n.style.background=grad(tone(x,1+gi+i));a.href=it.url;a.target='_blank';a.rel='noopener';
+        t.append(a);var meta=[it.by,it.date].filter(Boolean).join(' \u00b7 ');if(meta)t.append(el('span','rmeta',meta));if(it.why)t.append(el('span','rwhy',it.why));
+        li.append(n,t);ol.append(li);});});
+    if(!any)card.append(el('p','bsub','We couldn\u2019t find strong matches this time.'));}
+  function loadRecs(res,x,into){var card=into.querySelector('.brecs');if(!card)return;
+    var b=res.body,send={area:b.area,sit:b.sit,goal:b.goal,other:b.other,ctx:b.ctx,title:x.title};
+    if(b.ticket)send.ticket=b.ticket;else if(res.j.rec)send.rec=res.j.rec;
+    fetch(OWN_API.replace(/\/next-action$/,'/recommend'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(send)})
+      .then(function(r){return r.json();}).then(function(j){if(!j.recs)throw 0;x.recs=j.recs;fillRecs(card,j.recs,x);})
+      .catch(function(){var lab=card.querySelector('.blabel');card.replaceChildren(lab,el('p','bsub','Recommendations aren\u2019t available right now. Please try again later.'));});}
   function planText(x){var rd=x.say_kind==='ready',S=[rd?'READY TO USE':'WHAT I\u2019D SAY',x.say_label+':',rd?x.say:'\u201c'+x.say+'\u201d',''],N=['DO THIS NEXT'];
     x.next.forEach(function(n,i){N.push((i+1)+'. '+(n.step||n));});N.push('');
     var L=[x.title,'','WHAT I\u2019D DO',x.do,''].concat(rd?N.concat(S):S.concat(N));
     L.push('WATCH OUT',x.watch.text+(x.watch.t?' (Based on '+x.watch.t+')':''),'','UNDERLINED');
     x.und.forEach(function(u){L.push('\u2022 '+(u.q?'\u201c'+u.q+'\u201d \u2014 '+u.t:u.l+' \u2014 based on '+u.t));});
+    if(x.recs)REC_KINDS.forEach(function(k){var it=x.recs[k[0]]||[];if(!it.length)return;L.push('',k[1].toUpperCase());it.forEach(function(r){L.push('\u2022 '+r.title+(r.by?' ('+r.by+(r.date?', '+r.date:'')+')':'')+': '+r.url);});});
     L.push('','Underline AI','https://wei-wei-hu.github.io/underline-ai/');return L.join('\n');}
   // Email, PDF, PowerPoint, Copy and Print, in that order under every answer.
   function actions(x,into,mail){var bar=el('div','acts'),msg=el('p','actmsg');
@@ -924,6 +942,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     groups(x.und).forEach(function(gr,i){var it=el('div','bitem'),s=el('span','bsrc',(gr.quoted?'':'Based on ')+gr.t);s.title=gr.s||'';s.style.background=grad(tone(x,2+i));
       it.append(el('p',null,gr.l.join(' ')),s);items.append(it);});
     var g=el('div','bgrid');g.append.apply(g,x.say_kind==='ready'?[hero,steps,say,watch,u]:[hero,say,steps,watch,u]);
+    if(x.recs_pending||x.recs){var rc=el('div','bcard brecs');rc.append(el('span','blabel','Keep learning'));g.append(rc);if(x.recs)fillRecs(rc,x.recs,x);else rc.append(el('p','bsub','Finding the most relevant and recent books, podcasts, videos and articles for you. This takes about a minute.'));}
     b.append(hd,g);return b;}
   function showSample(x,into,tag,mail){
     into=into||out;
@@ -1217,8 +1236,8 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function waitMsg(first){closeArea();oGo.disabled=true;working('We’re creating the best personalized advice for your situation.',first,[[35000,'Almost there. Thank you for waiting.']]);
     oOut.scrollIntoView({behavior:'smooth',block:'start'});}
   function answerOrError(res,tag){
-    if(res.ok&&res.j.answer){var x=fromApi(res.j.answer);
-      showSample(x,oOut,tag,function(x){return codes('plan',{plan:x,text:planText(x)});});oOut.append(feedback(res.body,res.j.answer));return true;}
+    if(res.ok&&res.j.answer){var x=fromApi(res.j.answer);x.recs_pending=!!(res.body.ticket||res.j.rec);
+      showSample(x,oOut,tag,function(x){return codes('plan',{plan:x,text:planText(x)});});if(x.recs_pending)loadRecs(res,x,oOut);oOut.append(feedback(res.body,res.j.answer));return true;}
     var er=res.j&&res.j.error;
     if(er==='used'){memberCode();return false;}
     if(er==='busy'||/credit|limit|usage|billing/i.test(res.j&&res.j.detail||''))full();
