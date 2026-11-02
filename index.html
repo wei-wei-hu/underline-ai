@@ -672,9 +672,9 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   // A plain-text copy of an answer, for Copy and Email it to me.
   function planText(x){var rd=x.say_kind==='ready',S=[rd?'READY TO USE':'WHAT I\u2019D SAY',x.say_label+':',rd?x.say:'\u201c'+x.say+'\u201d',''],N=['DO THIS NEXT'];
     x.next.forEach(function(n,i){N.push((i+1)+'. '+(n.step||n));});N.push('');
-    var L=[x.title,'','WHAT I\u2019D DO',x.do,''].concat(rd?N.concat(S):S.concat(N));
-    L.push('WATCH OUT',x.watch.text+(x.watch.t?' (Based on '+x.watch.t+')':''),'','UNDERLINED');
-    x.und.forEach(function(u){L.push('\u2022 '+(u.q?'\u201c'+u.q+'\u201d \u2014 '+u.t:u.l+' \u2014 based on '+u.t));});
+    var U=['UNDERLINED'];x.und.forEach(function(u){U.push('\u2022 '+(u.q?'\u201c'+u.q+'\u201d \u2014 '+u.t:u.l+' \u2014 based on '+u.t));});U.push('');
+    var L=[x.title,''].concat(U,['WHAT I\u2019D DO',x.do,''],rd?N.concat(S):S.concat(N));
+    L.push('WATCH OUT',x.watch.text+(x.watch.t?' (Based on '+x.watch.t+')':''));
     L.push('','Underline AI','https://wei-wei-hu.github.io/underline-ai/');return L.join('\n');}
   // Email, PDF, PowerPoint, Copy and Print, in that order under every answer.
   function actions(x,into,mail){var bar=el('div','acts'),msg=el('p','actmsg');
@@ -729,7 +729,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     var u=el('div','bcard bund'),items=el('div','bitems');u.append(el('span','blabel','Underlined'),items);
     groups(x.und).forEach(function(gr,i){var it=el('div','bitem'),s=el('span','bsrc',(gr.quoted?'':'Based on ')+gr.t);s.title=gr.s||'';s.style.background=grad(tone(x,2+i));
       it.append(el('p',null,gr.l.join(' ')),s);items.append(it);});
-    var g=el('div','bgrid');g.append.apply(g,x.say_kind==='ready'?[hero,steps,say,watch,u]:[hero,say,steps,watch,u]);
+    var g=el('div','bgrid');g.append.apply(g,x.say_kind==='ready'?[u,hero,steps,say,watch]:[u,hero,say,steps,watch]);
     b.append(hd,g);return b;}
   function showSample(x,into,tag,mail){
     into=into||out;
