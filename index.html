@@ -285,7 +285,7 @@ html{overflow-x:hidden}
 .bhero .blabel{color:rgba(255,255,255,.9)}
 .bhero p{font-size:1.22rem;font-weight:500;line-height:1.45}
 .bsay .bsub{font-size:.8rem;color:#8A8FA3;margin:0 0 8px}
-.bsay .bq{font-size:.95rem;line-height:1.65}
+.bsay .bq{font-size:.95rem;line-height:1.65}.bready{white-space:pre-line}
 .bsteps ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .bsteps li{display:flex;gap:12px;align-items:flex-start;background:#fff;border-radius:12px;padding:10px 12px;font-size:.9rem;line-height:1.5;box-shadow:0 2px 8px rgba(120,100,170,.08)}
 .bnum{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:.8rem}
@@ -670,7 +670,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
   function head(title,tag){var f=document.createDocumentFragment();f.append(el('p','plabel','Your Next Action'));if(tag)f.append(el('span','tag',tag));f.append(el('h3',null,title));return f;}
   var out=$('#tryOut');
   // A plain-text copy of an answer, for Copy and Email it to me.
-  function planText(x){var L=[x.title,'','WHAT I\u2019D DO',x.do,'','WHAT I\u2019D SAY',x.say_label+':','\u201c'+x.say+'\u201d','','DO THIS NEXT'];
+  function planText(x){var L=[x.title,'','WHAT I\u2019D DO',x.do,'',(x.say_kind==='ready'?'READY TO USE':'WHAT I\u2019D SAY'),x.say_label+':',(x.say_kind==='ready'?x.say:'\u201c'+x.say+'\u201d'),'','DO THIS NEXT'];
     x.next.forEach(function(n,i){L.push((i+1)+'. '+(n.step||n));});
     L.push('','WATCH OUT',x.watch.text+(x.watch.t?' (Based on '+x.watch.t+')':''),'','UNDERLINED');
     x.und.forEach(function(u){L.push('\u2022 '+(u.q?'\u201c'+u.q+'\u201d \u2014 '+u.t:u.l+' \u2014 based on '+u.t));});
@@ -719,7 +719,7 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     var hd=el('div','bhead'),pills=el('div','bpills');pills.append(el('span','bpill','Your Next Action by Underline AI'));if(tag)pills.append(el('span','bpill soft',tag));
     hd.append(pills,el('h3','btitle',x.title));
     var hero=el('div','bcard bhero');hero.style.background=grad(tone(x,0));hero.append(el('span','blabel','★ What I’d do'),el('p',null,x.do));
-    var say=el('div','bcard bsay');say.append(el('span','blabel','What I’d say'));if(x.say_label)say.append(el('p','bsub',x.say_label));say.append(el('p','bq','“'+x.say+'”'));
+    var say=el('div','bcard bsay');say.append(el('span','blabel',x.say_kind==='ready'?'Ready to use':'What I’d say'));if(x.say_label)say.append(el('p','bsub',x.say_label));say.append(el('p','bq'+(x.say_kind==='ready'?' bready':''),(x.say_kind==='ready'?x.say:'“'+x.say+'”')));
     var steps=el('div','bcard bsteps'),ol=el('ol');steps.append(el('span','blabel','Do this next'),ol);
     x.next.forEach(function(n,i){var li=el('li'),num=el('span','bnum',String(i+1));num.style.background=grad(tone(x,1+i));li.append(num,el('span',null,n.step||n));ol.append(li);});
     var watch=el('div','bcard bwatch'),wi=el('div','bwi'),wt=el('div');wt.append(el('p',null,x.watch.text));
@@ -783,9 +783,9 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     s.addImage({data:canvasPng(Math.round(hw*dpi),Math.round(hh*dpi),function(g,w,h){var f=g.createLinearGradient(0,0,w,h);f.addColorStop(0,c[0]);f.addColorStop(1,c[1]);g.fillStyle=f;roundPath(g,0,0,w,h,20);g.fill();}),x:.6,y:1.8,w:hw,h:hh});
     label('★ What I’d do',.85,1.98,3.6,'FFFFFF');
     text(x.do,{x:.85,y:2.32,w:3.55,h:1.9,fontSize:fit(x.do,3.55,1.9,17,9,true),bold:true,color:'FFFFFF'});
-    card(4.85,1.8,4.1,2.6);label('What I’d say',5.1,1.98,3.6);
+    card(4.85,1.8,4.1,2.6);label(x.say_kind==='ready'?'Ready to use':'What I’d say',5.1,1.98,3.6);
     var sy=2.3;if(x.say_label){var lp=fit(x.say_label,3.6,.45,10,8);text(x.say_label,{x:5.1,y:sy,w:3.6,h:.45,fontSize:lp,color:'8A8FA3'});sy+=textH(x.say_label,lp,3.6,false,LH)+.06;}
-    var q='“'+x.say+'”';text(q,{x:5.1,y:sy,w:3.6,h:4.25-sy,fontSize:fit(q,3.6,4.25-sy,12,7.5),color:ink});
+    var q=(x.say_kind==='ready'?x.say:'“'+x.say+'”');text(q,{x:5.1,y:sy,w:3.6,h:4.25-sy,fontSize:fit(q,3.6,4.25-sy,12,7.5),color:ink});
     card(9.15,1.8,3.6,2.6);label('Watch out',9.4,1.98,3.1);
     s.addShape(P.ShapeType.roundRect,{x:9.4,y:2.32,w:.4,h:.4,rectRadius:.08,fill:{color:'F4956A'},line:{color:'F4956A'}});
     text('!',{x:9.4,y:2.32,w:.4,h:.4,fontSize:14,bold:true,color:'FFFFFF',align:'center',valign:'middle'});
@@ -855,9 +855,9 @@ h2 .grad{background:none!important;-webkit-text-fill-color:currentColor;color:va
     var c=tone(x,0);
     pdf.addImage(canvasPng(486,312,function(g,w,h){var f=g.createLinearGradient(0,0,w,h);f.addColorStop(0,c[0]);f.addColorStop(1,c[1]);g.fillStyle=f;roundPath(g,0,0,w,h,22);g.fill();}),'PNG',X(.6),Y(1.8),4.05*u,2.6*u,'hero','FAST');
     label('What I’d do',X(.85),Y(2),[255,255,255]);block(x.do,X(.85),Y(2.3),3.55*u,1.95*u,14,9,'bold',[255,255,255]);
-    card(4.85,1.8,4.1,2.6);label('What I’d say',X(5.1),Y(2));
+    card(4.85,1.8,4.1,2.6);label(x.say_kind==='ready'?'Ready to use':'What I’d say',X(5.1),Y(2));
     var used=x.say_label?block(x.say_label,X(5.1),Y(2.28),3.6*u,.3*u,8.5,8,'normal',soft):0;
-    block('“'+x.say+'”',X(5.1),Y(2.28)+used+4,3.6*u,1.95*u-used-4,10.5,7.5,'normal',ink,1.4);
+    block((x.say_kind==='ready'?x.say:'“'+x.say+'”'),X(5.1),Y(2.28)+used+4,3.6*u,1.95*u-used-4,10.5,7.5,'normal',ink,1.4);
     card(9.15,1.8,3.6,2.6);label('Watch out',X(9.4),Y(2));
     pdf.setFillColor(244,149,106);pdf.roundedRect(X(9.4),Y(2.32),.4*u,.4*u,5,5,'F');pdf.setFont('helvetica','bold');pdf.setFontSize(12);col([255,255,255]);pdf.text('!',X(9.6),Y(2.32)+.4*u/2+4,{align:'center'});
     var wh=block(x.watch.text,X(9.95),Y(2.3),2.6*u,1.6*u,10.5,8,'bold',ink);
